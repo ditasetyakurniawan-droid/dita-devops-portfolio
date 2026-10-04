@@ -100,3 +100,6 @@ Dockerfile                    multistage non-root standalone image
 - Never publish private hostnames, namespace names, customer information, credentials, or internal screenshots and logs without approval and sanitation.
 - Uptime, latency, cluster counts, and numerical impact remain unpublished without a safe, reviewable source.
 - The next PRD gates are CV and claim review, final contact validation, SEO, and accessibility/performance acceptance.
+
+## CI/CD Pipeline Status
+- Automated via GitHub Webhook -> Jenkins -> SonarQube -> Harbor -> Argo CD -> Kubernetes.
