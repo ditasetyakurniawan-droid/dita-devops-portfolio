@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRight, Sparkles } from "lucide-react";
-import { BrandIcon } from "@/components/icons/BrandIcon";
+import { BrandIcon, type BrandKey } from "@/components/icons/BrandIcon";
+import { SpotlightCard } from "@/components/ui/SpotlightCard";
 
 export function ExperienceSection() {
   return (
@@ -31,109 +32,145 @@ export function ExperienceSection() {
           <div className="relative group">
             {/* Glowing marker dot */}
             <div className="absolute -left-[31px] sm:-left-[47px] top-1 flex size-5 items-center justify-center rounded-full bg-purple-600 ring-4 ring-[#030014] shadow-[0_0_15px_rgba(168,85,247,0.8)]">
-              <span className="size-2 rounded-full bg-white" />
+              <span className="size-2 rounded-full bg-white animate-pulse" />
             </div>
 
-            <div className="glass-card rounded-2xl sm:rounded-3xl p-6 sm:p-8">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-purple-500/30 bg-purple-950/40 px-3 py-1 font-mono text-xs font-semibold text-purple-200">
-                  <BrandIcon brand="bamboo" className="size-3.5" /> Nov 2025 — sekarang
-                </span>
-                <span className="rounded-md border border-emerald-500/30 bg-emerald-950/50 px-2.5 py-0.5 font-mono text-[11px] text-emerald-300">
-                  Aktif Bekerja
-                </span>
-              </div>
+            <SpotlightCard
+              spotlightColor="rgba(168, 85, 247, 0.3)"
+              className="hover:-translate-y-1 transition-all duration-300 hover:shadow-[0_20px_50px_rgba(168,85,247,0.18)]"
+            >
+              <div className="p-6 sm:p-8">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-purple-500/30 bg-purple-950/40 px-3 py-1 font-mono text-xs font-semibold text-purple-200">
+                    <BrandIcon brand="bamboo" className="size-3.5" /> Nov 2025 — sekarang
+                  </span>
+                  <span className="rounded-md border border-emerald-500/30 bg-emerald-950/50 px-2.5 py-0.5 font-mono text-[11px] text-emerald-300 shadow-[0_0_10px_rgba(16,185,129,0.3)]">
+                    ● Aktif Bekerja
+                  </span>
+                </div>
 
-              <h3 className="mt-4 text-xl sm:text-2xl font-bold text-white">
-                DevOps Engineer · BRI
-              </h3>
-              <p className="mt-1 font-mono text-xs text-slate-400">
-                Ekosistem Mobile Banking (200+ Microservices · Legacy & New Services)
-              </p>
+                <h3 className="mt-4 text-xl sm:text-2xl font-bold text-white group-hover:text-purple-300 transition-colors">
+                  DevOps Engineer · BRI
+                </h3>
+                <p className="mt-1 font-mono text-xs text-slate-400">
+                  Ekosistem Mobile Banking (200+ Microservices · Legacy & New Services)
+                </p>
 
-              <div className="mt-4 space-y-2.5 text-sm leading-relaxed text-slate-300">
-                <p>
-                  Mengelola pipeline CI/CD Bamboo, standarisasi base Dockerfile, skrip otomatisasi Shell, serta konfigurasi Helm dan OpenShift untuk <strong>200+ microservices</strong> lintas environment: Dev → QA → Pentest → UAT → Preprod → Prod (Isolated & Existing).
-                </p>
-                <p>
-                  Menerapkan kebijakan gate spesifik per branch: <strong>hardgate unit test</strong> pada branch feature, <strong>softgate</strong> pada branch dev, serta <strong>murni build & push image ke Nexus</strong> pada jalur produksi.
-                </p>
-                <p>
-                  Mengawal rilis dua tahap: internal pilot 1–2 minggu di Prod Isolated sebelum serah-terima rollout ke Prod Existing bersama tim <strong>IBO (Internal Banking Operations)</strong> via Jira & tabletop melintasi 3 lokasi fisik: DC, DRC, dan Google Cloud Platform (GCP).
-                </p>
-              </div>
+                <div className="mt-4 space-y-2.5 text-sm leading-relaxed text-slate-300">
+                  <p>
+                    Mengelola pipeline CI/CD Bamboo, standarisasi base Dockerfile, skrip otomatisasi Shell, serta konfigurasi Helm dan OpenShift untuk <strong>200+ microservices</strong> lintas environment: Dev → QA → Pentest → UAT → Preprod → Prod (Isolated & Existing).
+                  </p>
+                  <p>
+                    Menerapkan kebijakan gate spesifik per branch: <strong>hardgate unit test</strong> pada branch feature, <strong>softgate</strong> pada branch dev, serta <strong>murni build & push image ke Nexus</strong> pada jalur produksi.
+                  </p>
+                  <p>
+                    Mengawal rilis dua tahap: internal pilot 1–2 minggu di Prod Isolated sebelum serah-terima rollout ke Prod Existing bersama tim <strong>IBO (Internal Banking Operations)</strong> via Jira & tabletop melintasi 3 lokasi fisik: DC, DRC, dan Google Cloud Platform (GCP).
+                  </p>
+                </div>
 
-              {/* Case study direct links */}
-              <div className="mt-6 flex flex-wrap gap-4 border-t border-white/10 pt-4">
-                <Link
-                  href="/work/enterprise-delivery-diagnostics"
-                  className="inline-flex items-center gap-1 text-xs font-semibold text-cyan-400 hover:text-white transition-colors"
-                >
-                  <span>Studi Kasus 200+ Microservices</span>
-                  <ArrowUpRight className="size-3.5" />
-                </Link>
-                <Link
-                  href="/work/scripted-release-promotion"
-                  className="inline-flex items-center gap-1 text-xs font-semibold text-purple-300 hover:text-white transition-colors"
-                >
-                  <span>Studi Kasus Promosi Rilis Terkendali</span>
-                  <ArrowUpRight className="size-3.5" />
-                </Link>
+                {/* Tech Badges */}
+                <div className="mt-6 flex flex-wrap gap-1.5 pt-2">
+                  {(["bamboo", "helm", "nexus", "rabbitmq", "redis", "elasticsearch"] as const satisfies readonly BrandKey[]).map((b) => (
+                    <span
+                      key={b}
+                      className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-[#0c102a]/80 px-2.5 py-1 font-mono text-[11px] text-slate-300"
+                    >
+                      <BrandIcon brand={b} className="size-3.5" />
+                      <span className="capitalize">{b}</span>
+                    </span>
+                  ))}
+                </div>
+
+                {/* Case study direct links */}
+                <div className="mt-6 flex flex-wrap gap-4 border-t border-white/10 pt-4">
+                  <Link
+                    href="/work/enterprise-delivery-diagnostics"
+                    className="inline-flex items-center gap-1 text-xs font-semibold text-cyan-400 hover:text-white transition-colors"
+                  >
+                    <span>Studi Kasus 200+ Microservices</span>
+                    <ArrowUpRight className="size-3.5" />
+                  </Link>
+                  <Link
+                    href="/work/scripted-release-promotion"
+                    className="inline-flex items-center gap-1 text-xs font-semibold text-purple-300 hover:text-white transition-colors"
+                  >
+                    <span>Studi Kasus Promosi Rilis Terkendali</span>
+                    <ArrowUpRight className="size-3.5" />
+                  </Link>
+                </div>
               </div>
-            </div>
+            </SpotlightCard>
           </div>
 
           {/* Item 2: Homelab K8s Mandiri */}
           <div className="relative group">
             {/* Glowing marker dot */}
             <div className="absolute -left-[31px] sm:-left-[47px] top-1 flex size-5 items-center justify-center rounded-full bg-cyan-500 ring-4 ring-[#030014] shadow-[0_0_15px_rgba(6,182,212,0.8)]">
-              <span className="size-2 rounded-full bg-white" />
+              <span className="size-2 rounded-full bg-white animate-pulse" />
             </div>
 
-            <div className="glass-card rounded-2xl sm:rounded-3xl p-6 sm:p-8">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-cyan-500/30 bg-cyan-950/40 px-3 py-1 font-mono text-xs font-semibold text-cyan-200">
-                  <BrandIcon brand="kubernetes" className="size-3.5" /> 2026 — berjalan paralel (Proyek Mandiri)
-                </span>
-                <span className="rounded-md border border-cyan-500/30 bg-cyan-950/50 px-2.5 py-0.5 font-mono text-[11px] text-cyan-300">
-                  Bare-Metal KVM
-                </span>
-              </div>
+            <SpotlightCard
+              spotlightColor="rgba(6, 182, 212, 0.3)"
+              className="hover:-translate-y-1 transition-all duration-300 hover:shadow-[0_20px_50px_rgba(6,182,212,0.18)]"
+            >
+              <div className="p-6 sm:p-8">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-cyan-500/30 bg-cyan-950/40 px-3 py-1 font-mono text-xs font-semibold text-cyan-200">
+                    <BrandIcon brand="kubernetes" className="size-3.5" /> 2026 — berjalan paralel (Proyek Mandiri)
+                  </span>
+                  <span className="rounded-md border border-cyan-500/30 bg-cyan-950/50 px-2.5 py-0.5 font-mono text-[11px] text-cyan-300 shadow-[0_0_10px_rgba(6,182,212,0.3)]">
+                    Bare-Metal KVM
+                  </span>
+                </div>
 
-              <h3 className="mt-4 text-xl sm:text-2xl font-bold text-white">
-                Platform Kubernetes HA Multi-VM dari 0 & GitOps (Zabisa)
-              </h3>
-              <p className="mt-1 font-mono text-xs text-slate-400">
-                Infrastruktur Mandiri · 3 CP + 3 Worker · Keepalived VIP 192.168.100.60
-              </p>
-
-              <div className="mt-4 space-y-2.5 text-sm leading-relaxed text-slate-300">
-                <p>
-                  Merancang dan membangun sendiri klaster Kubernetes HA v1.30 dari 0 di atas bare-metal KVM/libvirt: Dual VM HAProxy + Keepalived VRRP floating VIP, 3 Control-Plane, 3 Worker, dan Dedicated VMs (Jenkins CI, Harbor Registry, ELK-Sonar, DB).
+                <h3 className="mt-4 text-xl sm:text-2xl font-bold text-white group-hover:text-cyan-300 transition-colors">
+                  Platform Kubernetes HA Multi-VM dari 0 & GitOps (Zabisa)
+                </h3>
+                <p className="mt-1 font-mono text-xs text-slate-400">
+                  Infrastruktur Mandiri · 3 CP + 3 Worker · Keepalived VIP 192.168.100.60
                 </p>
-                <p>
-                  Mengonfigurasi Longhorn Distributed Storage, HashiCorp Vault HA 3 replicas dengan sidecar injector untuk injeksi secret aplikasi dinamis, serta alur GitOps Argo CD dan simulasi backup/restore MySQL terenkripsi berkala.
-                </p>
-              </div>
 
-              {/* Case study direct links */}
-              <div className="mt-6 flex flex-wrap gap-4 border-t border-white/10 pt-4">
-                <Link
-                  href="/work/multi-vm-kubernetes-platform"
-                  className="inline-flex items-center gap-1 text-xs font-semibold text-cyan-400 hover:text-white transition-colors"
-                >
-                  <span>Arsitektur Klaster K8s dari 0</span>
-                  <ArrowUpRight className="size-3.5" />
-                </Link>
-                <Link
-                  href="/work/zabisa-controlled-delivery"
-                  className="inline-flex items-center gap-1 text-xs font-semibold text-purple-300 hover:text-white transition-colors"
-                >
-                  <span>GitOps Zabisa & Disaster Recovery</span>
-                  <ArrowUpRight className="size-3.5" />
-                </Link>
+                <div className="mt-4 space-y-2.5 text-sm leading-relaxed text-slate-300">
+                  <p>
+                    Merancang dan membangun sendiri klaster Kubernetes HA v1.30 dari 0 di atas bare-metal KVM/libvirt: Dual VM HAProxy + Keepalived VRRP floating VIP, 3 Control-Plane, 3 Worker, dan Dedicated VMs (Jenkins CI, Harbor Registry, ELK-Sonar, DB).
+                  </p>
+                  <p>
+                    Mengonfigurasi Longhorn Distributed Storage, HashiCorp Vault HA 3 replicas dengan sidecar injector untuk injeksi secret aplikasi dinamis, serta alur GitOps Argo CD dan simulasi backup/restore MySQL terenkripsi berkala.
+                  </p>
+                </div>
+
+                {/* Tech Badges */}
+                <div className="mt-6 flex flex-wrap gap-1.5 pt-2">
+                  {(["kubernetes", "argocd", "vault", "haproxy", "jenkins", "harbor", "longhorn"] as const satisfies readonly BrandKey[]).map((b) => (
+                    <span
+                      key={b}
+                      className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-[#0c102a]/80 px-2.5 py-1 font-mono text-[11px] text-slate-300"
+                    >
+                      <BrandIcon brand={b} className="size-3.5" />
+                      <span className="capitalize">{b}</span>
+                    </span>
+                  ))}
+                </div>
+
+                {/* Case study direct links */}
+                <div className="mt-6 flex flex-wrap gap-4 border-t border-white/10 pt-4">
+                  <Link
+                    href="/work/multi-vm-kubernetes-platform"
+                    className="inline-flex items-center gap-1 text-xs font-semibold text-cyan-400 hover:text-white transition-colors"
+                  >
+                    <span>Arsitektur Klaster K8s dari 0</span>
+                    <ArrowUpRight className="size-3.5" />
+                  </Link>
+                  <Link
+                    href="/work/zabisa-controlled-delivery"
+                    className="inline-flex items-center gap-1 text-xs font-semibold text-purple-300 hover:text-white transition-colors"
+                  >
+                    <span>GitOps Zabisa & Disaster Recovery</span>
+                    <ArrowUpRight className="size-3.5" />
+                  </Link>
+                </div>
               </div>
-            </div>
+            </SpotlightCard>
           </div>
 
           {/* Item 3: PT Pinus Pintar Community */}
@@ -143,24 +180,42 @@ export function ExperienceSection() {
               <span className="size-2 rounded-full bg-slate-300" />
             </div>
 
-            <div className="glass-card rounded-2xl sm:rounded-3xl p-6 sm:p-8">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 font-mono text-xs text-slate-300">
-                  <BrandIcon brand="githubactions" className="size-3.5" /> Pengalaman Sebelumnya
-                </span>
+            <SpotlightCard
+              spotlightColor="rgba(59, 130, 246, 0.25)"
+              className="hover:-translate-y-1 transition-all duration-300 hover:shadow-[0_20px_50px_rgba(59,130,246,0.15)]"
+            >
+              <div className="p-6 sm:p-8">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 font-mono text-xs text-slate-300">
+                    <BrandIcon brand="githubactions" className="size-3.5" /> Pengalaman Sebelumnya
+                  </span>
+                </div>
+
+                <h3 className="mt-4 text-xl sm:text-2xl font-bold text-white group-hover:text-blue-300 transition-colors">
+                  DevOps Engineer · PT Pinus Pintar Community
+                </h3>
+                <p className="mt-1 font-mono text-xs text-slate-400">
+                  Infrastruktur & Deployment Produk DeployAja dan SIDRA
+                </p>
+
+                <p className="mt-4 text-sm leading-relaxed text-slate-300">
+                  Merancang dan memelihara pipeline CI/CD GitHub Actions, standarisasi template deployment Docker dan Kubernetes, konfigurasi routing Ingress, serta sistem monitoring Prometheus dan Grafana untuk kestabilan operasional produk.
+                </p>
+
+                {/* Tech Badges */}
+                <div className="mt-6 flex flex-wrap gap-1.5 pt-2">
+                  {(["docker", "kubernetes", "prometheus", "grafana", "nginx"] as const satisfies readonly BrandKey[]).map((b) => (
+                    <span
+                      key={b}
+                      className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-[#0c102a]/80 px-2.5 py-1 font-mono text-[11px] text-slate-300"
+                    >
+                      <BrandIcon brand={b} className="size-3.5" />
+                      <span className="capitalize">{b}</span>
+                    </span>
+                  ))}
+                </div>
               </div>
-
-              <h3 className="mt-4 text-xl sm:text-2xl font-bold text-white">
-                DevOps Engineer · PT Pinus Pintar Community
-              </h3>
-              <p className="mt-1 font-mono text-xs text-slate-400">
-                Infrastruktur & Deployment Produk DeployAja dan SIDRA
-              </p>
-
-              <p className="mt-4 text-sm leading-relaxed text-slate-300">
-                Merancang dan memelihara pipeline CI/CD GitHub Actions, standarisasi template deployment Docker dan Kubernetes, konfigurasi routing Ingress, serta sistem monitoring Prometheus dan Grafana untuk kestabilan operasional produk.
-              </p>
-            </div>
+            </SpotlightCard>
           </div>
 
         </div>
