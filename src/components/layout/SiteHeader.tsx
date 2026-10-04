@@ -1,13 +1,47 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { FileText, Sparkles, Search } from "lucide-react";
+import { motion } from "framer-motion";
+import { FileText, Search } from "lucide-react";
 import { MobileNav } from "./MobileNav";
 
+const navItems = [
+  { href: "/#top", id: "top", label: "Beranda" },
+  { href: "/#about", id: "about", label: "Tentang" },
+  { href: "/#showcase", id: "showcase", label: "Showcase" },
+  { href: "/#tech-stack", id: "tech-stack", label: "Tech Stack" },
+  { href: "/#experience", id: "experience", label: "Pengalaman" },
+  { href: "/#contact", id: "contact", label: "Kontak" },
+];
+
 export function SiteHeader() {
+  const [activeSection, setActiveSection] = useState("top");
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPos = window.scrollY + 200;
+      for (let i = navItems.length - 1; i >= 0; i--) {
+        const item = navItems[i];
+        const el = document.getElementById(item.id);
+        if (el) {
+          const top = el.offsetTop;
+          if (scrollPos >= top) {
+            setActiveSection(item.id);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <header className="fixed top-3 sm:top-5 inset-x-0 z-40 px-3 sm:px-6 pointer-events-none transition-all duration-300">
-      <div className="pointer-events-auto mx-auto flex max-w-5xl items-center justify-between gap-4 rounded-full border border-white/10 bg-[#07091e]/80 px-4 sm:px-6 py-2.5 shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] backdrop-blur-2xl">
+      <div className="pointer-events-auto mx-auto flex max-w-5xl items-center justify-between gap-4 rounded-full border border-white/10 bg-[#07091e]/85 px-4 sm:px-6 py-2.5 shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] backdrop-blur-2xl">
         {/* Brand */}
         <Link href="/#top" className="flex items-center gap-2.5 group">
           <span className="relative flex size-8 items-center justify-center rounded-full bg-gradient-to-tr from-purple-600 to-cyan-500 font-mono text-xs font-bold text-white shadow-[0_0_15px_rgba(168,85,247,0.4)]">
@@ -22,26 +56,29 @@ export function SiteHeader() {
           </div>
         </Link>
 
-        {/* Center Desktop Navigation */}
+        {/* Center Desktop Navigation with sliding pill */}
         <nav aria-label="Navigasi utama" className="hidden md:flex items-center gap-1 text-xs sm:text-sm font-medium text-slate-300">
-          <Link href="/#top" className="px-3.5 py-1.5 rounded-full hover:text-white hover:bg-white/5 transition-all">
-            Beranda
-          </Link>
-          <Link href="/#about" className="px-3.5 py-1.5 rounded-full hover:text-white hover:bg-white/5 transition-all">
-            Tentang
-          </Link>
-          <Link href="/#showcase" className="px-3.5 py-1.5 rounded-full hover:text-white hover:bg-white/5 transition-all">
-            Showcase
-          </Link>
-          <Link href="/#tech-stack" className="px-3.5 py-1.5 rounded-full hover:text-white hover:bg-white/5 transition-all">
-            Tech Stack
-          </Link>
-          <Link href="/#experience" className="px-3.5 py-1.5 rounded-full hover:text-white hover:bg-white/5 transition-all">
-            Pengalaman
-          </Link>
-          <Link href="/#contact" className="px-3.5 py-1.5 rounded-full hover:text-white hover:bg-white/5 transition-all">
-            Kontak
-          </Link>
+          {navItems.map((item) => {
+            const isActive = activeSection === item.id;
+            return (
+              <Link
+                key={item.id}
+                href={item.href}
+                className={`relative px-3.5 py-1.5 rounded-full transition-colors ${
+                  isActive ? "text-white font-semibold" : "hover:text-white hover:bg-white/5"
+                }`}
+              >
+                {isActive && (
+                  <motion.div
+                    layoutId="activeNavIndicator"
+                    className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-600/35 via-indigo-600/30 to-cyan-500/35 border border-white/20 shadow-[0_0_15px_rgba(168,85,247,0.35)]"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
+                <span className="relative z-10">{item.label}</span>
+              </Link>
+            );
+          })}
         </nav>
 
         {/* Right Action */}

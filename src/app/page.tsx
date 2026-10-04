@@ -7,6 +7,8 @@ import { AmbientAtmosphere } from "@/components/background/AmbientAtmosphere";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { WelcomeSplash } from "@/components/intro/WelcomeSplash";
+import { SectionSlide } from "@/components/ui/SectionSlide";
+import { SectionDivider } from "@/components/ui/SectionDivider";
 
 export default function Home() {
   return (
@@ -30,10 +32,30 @@ export default function Home() {
             <AmbientAtmosphere />
             <div className="relative z-10">
               <HeroSection />
-              <AboutMeSection />
-              <PortfolioShowcase />
-              <ExperienceSection />
-              <ContactSection />
+
+              <SectionDivider label="✦ 01 / ARSITEKTUR & PROFIL" accentColor="purple" />
+
+              <SectionSlide>
+                <AboutMeSection />
+              </SectionSlide>
+
+              <SectionDivider label="✦ 02 / REKAYASA & KARYA TERUJI" accentColor="cyan" />
+
+              <SectionSlide>
+                <PortfolioShowcase />
+              </SectionSlide>
+
+              <SectionDivider label="✦ 03 / REKAM JEJAK ENTERPRISE" accentColor="purple" />
+
+              <SectionSlide>
+                <ExperienceSection />
+              </SectionSlide>
+
+              <SectionDivider label="✦ 04 / HUBUNGI & KONSULTASI" accentColor="emerald" />
+
+              <SectionSlide>
+                <ContactSection />
+              </SectionSlide>
             </div>
           </div>
         </main>
