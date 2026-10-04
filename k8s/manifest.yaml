@@ -1,0 +1,106 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dita-devops-portfolio
+  namespace: test-app
+  labels:
+    app: dita-devops-portfolio
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: dita-devops-portfolio
+  template:
+    metadata:
+      labels:
+        app: dita-devops-portfolio
+    spec:
+      containers:
+        - name: web
+          image: harbor-dt.co.id/devops-apps/dita-devops-portfolio:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+              name: http
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: PORT
+              value: "3000"
+            - name: NEXT_PUBLIC_SITE_URL
+              value: "https://dita-devops.zabisa.my.id"
+            - name: NEXT_PUBLIC_ALLOW_INDEX
+              value: "true"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 384Mi
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 2
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dita-devops-portfolio
+  namespace: test-app
+  labels:
+    app: dita-devops-portfolio
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 3000
+      protocol: TCP
+      name: http
+  selector:
+    app: dita-devops-portfolio
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dita-devops-portfolio-ingress
+  namespace: test-app
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "8m"
+spec:
+  tls:
+    - hosts:
+        - dita-devops.zabisa.my.id
+      secretName: dita-portfolio-tls
+  rules:
+    - host: dita-devops.zabisa.my.id
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: dita-devops-portfolio
+                port:
+                  number: 80

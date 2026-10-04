@@ -1,0 +1,246 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root { color-scheme: dark; }
+  html { scroll-behavior: smooth; }
+  body { 
+    background-color: #030014;
+    color: #F5F7FA;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    @apply antialiased selection:bg-purple-500/30 selection:text-white; 
+  }
+  :focus-visible { outline: 2px solid #A855F7; outline-offset: 4px; }
+}
+
+@layer components {
+  .ambient-atmosphere {
+    --ambient-grid-size: 68px;
+    background: radial-gradient(circle at 50% 0%, #150d32 0%, #080618 45%, #030014 100%);
+  }
+
+  /* Glassmorphism & Luxury Cards */
+  .glass-card {
+    background: rgba(13, 16, 38, 0.65);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    box-shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .glass-card:hover {
+    border-color: rgba(168, 85, 247, 0.4);
+    box-shadow: 0 22px 60px -15px rgba(168, 85, 247, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+
+  .neon-button-primary {
+    position: relative;
+    background: linear-gradient(135deg, #6366F1, #8B5CF6, #A855F7);
+    color: #FFFFFF;
+    box-shadow: 0 0 25px -4px rgba(139, 92, 246, 0.6);
+    transition: all 0.25s ease-out;
+  }
+  .neon-button-primary:hover {
+    box-shadow: 0 0 35px 2px rgba(168, 85, 247, 0.8);
+    transform: translateY(-2px);
+  }
+
+  .neon-button-secondary {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: #F5F7FA;
+    transition: all 0.25s ease-out;
+  }
+  .neon-button-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(168, 85, 247, 0.5);
+    box-shadow: 0 0 20px -5px rgba(168, 85, 247, 0.3);
+    transform: translateY(-2px);
+  }
+
+  /* Ambient atmosphere elements */
+  .ambient-atmosphere__band {
+    position: absolute;
+    left: 0;
+    right: 0;
+    mask-image: linear-gradient(180deg, transparent, #000 18%, #000 72%, transparent);
+  }
+
+  .ambient-atmosphere__aura {
+    position: absolute;
+    right: -10%;
+    top: 0;
+    width: min(95vw, 1300px);
+    height: 100%;
+    border-radius: 50%;
+    background:
+      radial-gradient(ellipse at 32% 44%, rgba(99, 102, 241, 0.35), transparent 59%),
+      radial-gradient(ellipse at 78% 54%, rgba(168, 85, 247, 0.28), transparent 63%),
+      radial-gradient(ellipse at 50% 20%, rgba(6, 182, 212, 0.20), transparent 60%);
+  }
+
+  .ambient-atmosphere__band[data-alternate] .ambient-atmosphere__aura {
+    background:
+      radial-gradient(ellipse at 38% 56%, rgba(124, 58, 237, 0.32), transparent 61%),
+      radial-gradient(ellipse at 85% 35%, rgba(6, 182, 212, 0.25), transparent 64%),
+      radial-gradient(ellipse at 20% 70%, rgba(99, 102, 241, 0.22), transparent 58%);
+  }
+
+  .ambient-atmosphere__rings,
+  .ambient-atmosphere__ring-sweep {
+    position: absolute;
+    top: -80px;
+    right: -14%;
+    width: min(82vw, 1170px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+  }
+
+  .ambient-atmosphere__rings {
+    border: 1px solid rgba(153, 190, 224, .15);
+    box-shadow: inset 0 0 110px -80px rgba(96, 185, 216, .20);
+  }
+
+  .ambient-atmosphere__rings::before,
+  .ambient-atmosphere__rings::after {
+    content: "";
+    position: absolute;
+    border: 1px solid rgba(146, 185, 220, .10);
+    border-radius: 50%;
+  }
+
+  .ambient-atmosphere__rings::before { inset: 13%; }
+  .ambient-atmosphere__rings::after { inset: 28%; border-color: rgba(113, 215, 208, .09); }
+
+  .ambient-atmosphere__ring-sweep {
+    background: conic-gradient(from 170deg, transparent 0deg, transparent 251deg, rgba(113, 215, 208, .09) 283deg, rgba(163, 219, 248, .76) 308deg, transparent 330deg);
+    mask-image: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
+  }
+
+  .ambient-atmosphere__trace {
+    position: absolute;
+    right: 12%;
+    top: 250px;
+    width: 1px;
+    height: 160px;
+    background: linear-gradient(180deg, transparent, rgba(113, 215, 208, .20) 35%, rgba(176, 233, 244, .85) 88%, transparent);
+    box-shadow: 0 0 15px rgba(113, 215, 208, .13);
+  }
+
+  .ambient-atmosphere__veil,
+  .ambient-atmosphere__grid,
+  .ambient-atmosphere__routes,
+  .ambient-atmosphere__grain {
+    position: absolute;
+    inset: 0;
+  }
+
+  .ambient-atmosphere__veil {
+    background: linear-gradient(90deg, rgba(9, 11, 16, .54), rgba(9, 11, 16, .12) 48%, transparent 80%);
+  }
+
+  /* Both grids use the same origin and tile size. No section-sized masks. */
+  .ambient-atmosphere__grid {
+    background-image:
+      linear-gradient(to right, rgba(194, 215, 240, .073) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(194, 215, 240, .073) 1px, transparent 1px);
+    background-size: var(--ambient-grid-size) var(--ambient-grid-size);
+    mask-image: linear-gradient(90deg, transparent, rgba(0,0,0,.42) 30%, #000 82%);
+  }
+
+  .ambient-atmosphere__routes {
+    background: url("/infrastructure-routes.svg") right top / min(64vw, 900px) auto repeat-y;
+    mask-image: linear-gradient(90deg, transparent 30%, #000 80%);
+    opacity: .78;
+  }
+
+  .ambient-atmosphere__rail {
+    position: absolute;
+    inset: 0 12% 0 auto;
+    width: 1px;
+    background: rgba(113, 215, 208, .06);
+  }
+
+  /* A bounded halo follows the pointer anywhere within the whole shared scene. */
+  .ambient-atmosphere__spotlight {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    transform: translate3d(-2000px, -2000px, 0);
+    contain: paint;
+    background-image:
+      radial-gradient(circle closest-side, rgba(113, 215, 208, .13), transparent 100%),
+      linear-gradient(to right, rgba(113, 215, 208, .23) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(113, 215, 208, .23) 1px, transparent 1px);
+    background-size: auto, var(--ambient-grid-size) var(--ambient-grid-size), var(--ambient-grid-size) var(--ambient-grid-size);
+    background-position: center, var(--spot-grid-x, 0px) var(--spot-grid-y, 0px), var(--spot-grid-x, 0px) var(--spot-grid-y, 0px);
+    mask-image: radial-gradient(circle closest-side, #000 5%, transparent 100%);
+    transition: opacity .28s ease-out;
+  }
+
+  .ambient-atmosphere__grain {
+    background: url("/noise.svg") repeat;
+    background-size: 160px 160px;
+    opacity: .075;
+    mix-blend-mode: soft-light;
+  }
+
+  .ambient-atmosphere__fade {
+    position: absolute;
+    inset: auto 0 0;
+    height: 150px;
+    background: linear-gradient(180deg, transparent, #090b10);
+  }
+
+  .glow-button {
+    position: relative;
+    isolation: isolate;
+    background: #E9EDF2;
+    color: #090B10;
+    box-shadow: 0 10px 32px -19px rgba(122,168,255,.9);
+  }
+  .glow-button::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    z-index: -1;
+    border-radius: inherit;
+    background: linear-gradient(110deg, rgba(122,168,255,.95), rgba(201,210,220,.36), rgba(113,215,208,.95));
+    filter: blur(9px);
+    opacity: .3;
+    transition: opacity 180ms ease;
+  }
+  .glow-button:hover::before,
+  .glow-button:focus-visible::before { opacity: .72; }
+}
+
+@media (max-width: 640px) {
+  .ambient-atmosphere__aura { right: -34%; width: 150vw; opacity: .8; }
+  .ambient-atmosphere__grid { opacity: .55; }
+  .ambient-atmosphere__rings,
+  .ambient-atmosphere__ring-sweep { right: -510px; width: 760px; opacity: .58; }
+  .ambient-atmosphere__routes { background-size: 760px auto; opacity: .42; }
+  .ambient-atmosphere__trace { opacity: .5; }
+}
+
+@media (prefers-contrast: more), (forced-colors: active) {
+  .ambient-atmosphere__grain,
+  .ambient-atmosphere__spotlight,
+  .ambient-atmosphere__rings,
+  .ambient-atmosphere__ring-sweep,
+  .ambient-atmosphere__routes,
+  .ambient-atmosphere__rail,
+  .ambient-atmosphere__trace { display: none; }
+  .ambient-atmosphere__aura { opacity: .2; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .ambient-atmosphere__spotlight,
+  .ambient-atmosphere__ring-sweep,
+  .ambient-atmosphere__trace { display: none; }
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}

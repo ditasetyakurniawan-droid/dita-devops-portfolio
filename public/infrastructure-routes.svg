@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="912" viewBox="0 0 800 912" fill="none">
+  <defs>
+    <linearGradient id="route" x1="80" y1="0" x2="800" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7aa8ff" stop-opacity="0"/>
+      <stop offset=".5" stop-color="#7aa8ff" stop-opacity=".22"/>
+      <stop offset="1" stop-color="#71d7d0" stop-opacity=".26"/>
+    </linearGradient>
+  </defs>
+  <g stroke="url(#route)">
+    <path d="M620 0V120L674 174V418L620 472V684L674 738V836L620 890V912"/>
+    <path d="M80 174H426L480 228H800M210 684H426L480 630H800"/>
+    <path d="M480 228V312M480 630V554"/>
+  </g>
+  <g fill="#71d7d0" fill-opacity=".46">
+    <circle cx="480" cy="228" r="2.5"/>
+    <circle cx="480" cy="630" r="2.5"/>
+    <circle cx="620" cy="472" r="2"/>
+  </g>
+</svg>
