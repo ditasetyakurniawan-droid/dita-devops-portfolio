@@ -139,6 +139,13 @@ pipeline {
               git commit -m "chore(gitops): promote image ${SHORT_SHA} [skip ci]"
               git push origin main
               echo "GitOps repository successfully updated with image ${SHORT_SHA}!"
+              # Beritahu Argo CD di LAN agar langsung auto-sync seketika (tanpa nunggu 3 menit)
+              echo "Notifying Argo CD for instant rollout..."
+              curl -k -s -X POST \
+                -H "Content-Type: application/json" \
+                -H "X-GitHub-Event: push" \
+                -d '{"repository":{"html_url":"https://github.com/ditasetyakurniawan-droid/dita-devops-portfolio-gitops"}}' \
+                http://192.168.100.64/api/webhook || true
             fi
             
             cd ..
