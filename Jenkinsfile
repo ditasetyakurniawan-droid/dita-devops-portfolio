@@ -32,20 +32,20 @@ pipeline {
 
     stage('Node Quality Gate') {
       steps {
-        sh """
-          docker run --rm \
-            -u \$(id -u):\$(id -g) \
-            -v "\$PWD":/app \
-            -w /app \
-            -e HOME=/tmp \
-            -e CI=true \
-            -e NEXT_TELEMETRY_DISABLED=1 \
-            ${NODE_IMAGE} sh -c '
-              npm ci --no-audit --no-fund
-              npm run typecheck
-              npm run build
-            '
-        """
+        sh '''docker run --rm \
+          --user "$(id -u):$(id -g)" \
+          --volumes-from "$HOSTNAME" \
+          -w "$PWD" \
+          -e HOME=/tmp \
+          -e CI=true \
+          -e NEXT_TELEMETRY_DISABLED=1 \
+          $NODE_IMAGE sh -c '
+            set -eu
+            npm ci --no-audit --no-fund
+            npm run typecheck
+            npm run build
+          '
+        '''
       }
     }
 
