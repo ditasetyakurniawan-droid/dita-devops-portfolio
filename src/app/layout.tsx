@@ -4,6 +4,7 @@ import { GeistSans } from "geist/font/sans";
 import { profile } from "@/content/profile";
 import { CommandMenu } from "@/components/layout/CommandMenu";
 import { ScrollProgressBar } from "@/components/ui/ScrollProgressBar";
+import { FloatingQuickAction } from "@/components/ui/FloatingQuickAction";
 import "./globals.css";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://dita-devops.zabisa.my.id";
@@ -63,6 +64,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body className="font-sans">
         <ScrollProgressBar />
         {children}
+        <FloatingQuickAction />
         <CommandMenu />
       </body>
     </html>

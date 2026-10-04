@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Play, RotateCcw, CheckCircle2, ShieldCheck, Sparkles, Terminal as TerminalIcon, Cpu, Layers } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Play, RotateCcw, CheckCircle2, ShieldCheck, Sparkles, Terminal as TerminalIcon, Cpu, Layers, CornerDownLeft } from "lucide-react";
 import { BrandIcon } from "@/components/icons/BrandIcon";
 
-type TerminalTab = "telemetry" | "nodes" | "gitops" | "simulator";
+type TerminalTab = "telemetry" | "nodes" | "gitops" | "simulator" | "interactive";
 
 interface SimulationStep {
   text: string;
@@ -12,10 +12,35 @@ interface SimulationStep {
   detail?: string;
 }
 
+interface CliHistoryItem {
+  cmd: string;
+  output: string[];
+}
+
 export function DevOpsTerminal() {
   const [activeTab, setActiveTab] = useState<TerminalTab>("telemetry");
   const [isSimulating, setIsSimulating] = useState(false);
   const [simStepIndex, setSimStepIndex] = useState(0);
+
+  // Interactive CLI State
+  const [cliInput, setCliInput] = useState("");
+  const cliEndRef = useRef<HTMLDivElement>(null);
+  const [cliHistory, setCliHistory] = useState<CliHistoryItem[]>([
+    {
+      cmd: "help",
+      output: [
+        "Dita DevOps Interactive Shell v2.4 (Platform Console)",
+        "Ketik perintah atau klik opsi di bawah:",
+        "  help     - Buka daftar bantuan ini",
+        "  skills   - Tampilkan tech stack & tools platform",
+        "  bri      - Arsitektur CI/CD 200+ microservices di BRI",
+        "  k8s      - Topologi 6 nodes bare-metal Kubernetes homelab",
+        "  contact  - Saluran komunikasi & jejaring profesional",
+        "  whoami   - Cek identitas sesi pengguna",
+        "  clear    - Bersihkan layar terminal",
+      ],
+    },
+  ]);
 
   const simulationSteps: SimulationStep[] = [
     { text: "Git Push Event via Cloudflare Tunnel", detail: "Webhook received at /github-webhook/ (200 OK)", status: "pending" },
@@ -58,6 +83,89 @@ export function DevOpsTerminal() {
       setIsSimulating(false);
     }
   }, [isSimulating, simStepIndex, steps.length]);
+
+  const handleCliSubmit = (e?: React.FormEvent, manualCmd?: string) => {
+    if (e) e.preventDefault();
+    const rawCmd = (manualCmd ?? cliInput).trim().toLowerCase();
+    if (!rawCmd) return;
+
+    if (rawCmd === "clear") {
+      setCliHistory([]);
+      setCliInput("");
+      return;
+    }
+
+    let output: string[] = [];
+    switch (rawCmd) {
+      case "help":
+        output = [
+          "Perintah yang tersedia:",
+          "  help     - Buka daftar panduan ini",
+          "  skills   - Tampilkan tech stack & tools platform",
+          "  bri      - Arsitektur CI/CD 200+ microservices di BRI",
+          "  k8s      - Topologi 6 nodes bare-metal Kubernetes homelab",
+          "  contact  - Saluran komunikasi & kontak langsung",
+          "  whoami   - Informasi sesi & status hak akses",
+          "  clear    - Bersihkan layar terminal",
+        ];
+        break;
+      case "skills":
+        output = [
+          "[INFRA & CLUSTER]   Kubernetes, Helm, OpenShift, Docker, KVM, Calico CNI",
+          "[CI/CD & SAST]      Bamboo, Argo CD, Jenkins, SonarQube, Trivy, GitOps",
+          "[SECURITY & SECRET] HashiCorp Vault HA, Vault Agent Injector, DevSecOps",
+          "[STORAGE & NETWORK] HAProxy VIP, Keepalived, Longhorn Replicated PVCs, MetalLB",
+          "[OBSERVABILITY]     EFK Stack (Elasticsearch, Fluentd/Fluent Bit, Kibana), Prometheus",
+        ];
+        break;
+      case "bri":
+        output = [
+          "[ORGANISASI]   Bank Rakyat Indonesia (BRI) - Mobile Banking Platform",
+          "[SKALA]        200+ Microservices aktif dikelola & distandarisasi",
+          "[PIPELINE]     Bamboo 6-Stage (Dev -> QA -> Pentest -> UAT -> Preprod -> Prod)",
+          "[KEBIJAKAN]    Hardgate (feature), Softgate (dev), Immutable Push (prod)",
+          "[PROMOSI]      2 Tahap: Prod Isolated (1-2 minggu pilot) -> Handover IBO -> Prod Existing",
+          "[DATACENTER]   Aktif di DC, DRC, dan Google Cloud Platform (GCP)",
+        ];
+        break;
+      case "k8s":
+        output = [
+          "[KLASTER]      Homelab K8s v1.30.14 Bare-Metal (100% Dari 0)",
+          "[TOPOLOGI]     6 Nodes: 3 Control-Plane (HA) + 3 Worker Nodes",
+          "[VIP GATEWAY]  Dual HAProxy + Keepalived VRRP Floating VIP: 192.168.100.60:6443",
+          "[STORAGE]      Longhorn Distributed Storage Engine (Replicated Dynamic PVCs)",
+          "[SECRETS]      HashiCorp Vault HA (3 Pods) + Vault Agent Sidecar Auto-Inject",
+          "[UPTIME]       70 Hari+ Zero Unplanned Downtime",
+        ];
+        break;
+      case "contact":
+        output = [
+          "[EMAIL]    ditasetyakurniawan@gmail.com",
+          "[WHATSAPP] +62 851-9451-3004",
+          "[LINKEDIN] linkedin.com/in/ditasetyakurniawan",
+          "[GITHUB]   github.com/ditasetyakurniawan-droid",
+        ];
+        break;
+      case "whoami":
+        output = [
+          "visitor@homelab-k8s [Status: Rekruter / Tech Lead / Fellow Engineer]",
+          "Sesi aktif: TLS 1.3 / Cloudflare Zero-Trust Tunnel / Authorized Guest",
+        ];
+        break;
+      default:
+        output = [
+          `bash: ${rawCmd}: command not found.`,
+          "Ketik 'help' untuk melihat daftar perintah yang tersedia.",
+        ];
+    }
+
+    setCliHistory((prev) => [...prev, { cmd: rawCmd, output }]);
+    setCliInput("");
+
+    setTimeout(() => {
+      cliEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 50);
+  };
 
   return (
     <div className="relative mx-auto w-full max-w-xl lg:max-w-none">
@@ -145,10 +253,23 @@ export function DevOpsTerminal() {
             <Sparkles className="size-3.5 text-amber-300 animate-pulse" />
             <span>simulate-pipeline.sh</span>
           </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab("interactive")}
+            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 transition-all ${
+              activeTab === "interactive"
+                ? "bg-emerald-600/30 text-emerald-200 border border-emerald-500/40 shadow-[0_0_12px_rgba(16,185,129,0.3)]"
+                : "text-emerald-400 hover:text-emerald-200 hover:bg-emerald-950/30"
+            }`}
+          >
+            <TerminalIcon className="size-3.5 text-emerald-300" />
+            <span>interactive-cli</span>
+          </button>
         </div>
 
         {/* Terminal Content Area */}
-        <div className="p-4 sm:p-5 font-mono text-xs text-slate-300 min-h-[310px] custom-terminal-scroll overflow-y-auto">
+        <div className="p-4 sm:p-5 font-mono text-xs text-slate-300 min-h-[310px] max-h-[360px] custom-terminal-scroll overflow-y-auto">
           {/* TAB 1: Telemetry Live Overview */}
           {activeTab === "telemetry" && (
             <div className="space-y-4">
@@ -282,14 +403,14 @@ export function DevOpsTerminal() {
                 <div className="flex items-center justify-between rounded-lg bg-emerald-950/30 border border-emerald-500/30 p-2">
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="size-3.5 text-emerald-400 shrink-0" />
-                    <span className="text-white font-medium">dita-devops-portfolio-5759b9558b-m9tnx</span>
+                    <span className="text-white font-medium">dita-devops-portfolio-76cf745c49-62hnn</span>
                   </div>
                   <span className="text-emerald-400 font-semibold text-[10px]">1/1 Running</span>
                 </div>
                 <div className="flex items-center justify-between rounded-lg bg-emerald-950/30 border border-emerald-500/30 p-2">
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="size-3.5 text-emerald-400 shrink-0" />
-                    <span className="text-white font-medium">dita-devops-portfolio-5759b9558b-rxb6l</span>
+                    <span className="text-white font-medium">dita-devops-portfolio-76cf745c49-txpql</span>
                   </div>
                   <span className="text-emerald-400 font-semibold text-[10px]">1/1 Running</span>
                 </div>
@@ -302,7 +423,7 @@ export function DevOpsTerminal() {
                 </div>
                 <div className="text-slate-400 flex items-center justify-between">
                   <span>GitOps Commit Target:</span>
-                  <span className="text-cyan-300 font-mono">main (ac6da83)</span>
+                  <span className="text-cyan-300 font-mono">main (59c043e)</span>
                 </div>
                 <div className="text-slate-400 flex items-center justify-between">
                   <span>Ingress Host:</span>
@@ -312,7 +433,7 @@ export function DevOpsTerminal() {
             </div>
           )}
 
-          {/* TAB 4: Interactive Simulator */}
+          {/* TAB 4: Automated Promotion Simulator */}
           {activeTab === "simulator" && (
             <div className="space-y-3">
               <div className="flex items-center justify-between">
@@ -376,6 +497,66 @@ export function DevOpsTerminal() {
                   </div>
                 ))}
               </div>
+            </div>
+          )}
+
+          {/* TAB 5: Interactive Command Prompt (Real Interactive CLI) */}
+          {activeTab === "interactive" && (
+            <div className="space-y-3 font-mono text-[11px]">
+              {/* Quick suggestion chips */}
+              <div className="flex flex-wrap items-center gap-1.5 pb-2 border-b border-white/10">
+                <span className="text-[10px] text-slate-400">Quick:</span>
+                {(["help", "skills", "bri", "k8s", "contact", "whoami", "clear"] as const).map((chip) => (
+                  <button
+                    key={chip}
+                    type="button"
+                    onClick={() => handleCliSubmit(undefined, chip)}
+                    className="rounded-md border border-white/15 bg-white/5 px-2 py-0.5 text-[10px] text-cyan-300 hover:border-cyan-400/50 hover:bg-cyan-950/40 hover:text-white transition-colors"
+                  >
+                    {chip}
+                  </button>
+                ))}
+              </div>
+
+              {/* History output */}
+              <div className="space-y-2.5">
+                {cliHistory.map((item, idx) => (
+                  <div key={idx} className="space-y-1">
+                    <div className="flex items-center gap-1.5 text-cyan-300">
+                      <span className="text-emerald-400 font-bold">dita@k8s:~$</span>
+                      <span>{item.cmd}</span>
+                    </div>
+                    <div className="text-slate-300 space-y-0.5 pl-3 border-l border-white/10">
+                      {item.output.map((line, lIdx) => (
+                        <p key={lIdx} className="leading-relaxed">
+                          {line}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+                <div ref={cliEndRef} />
+              </div>
+
+              {/* Live Input Prompt */}
+              <form onSubmit={handleCliSubmit} className="flex items-center gap-2 pt-2 border-t border-white/10">
+                <span className="text-emerald-400 font-bold shrink-0">dita@k8s:~$</span>
+                <input
+                  type="text"
+                  value={cliInput}
+                  onChange={(e) => setCliInput(e.target.value)}
+                  placeholder="Ketik 'help', 'skills', 'bri', dll..."
+                  aria-label="Terminal command prompt"
+                  className="w-full bg-transparent text-white placeholder-slate-500 focus:outline-none font-mono text-xs"
+                />
+                <button
+                  type="submit"
+                  aria-label="Jalankan perintah"
+                  className="rounded-lg bg-cyan-500/20 px-2 py-1 text-cyan-300 hover:bg-cyan-500/30 transition-colors"
+                >
+                  <CornerDownLeft className="size-3" />
+                </button>
+              </form>
             </div>
           )}
         </div>
