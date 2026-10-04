@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { FileText, Sparkles } from "lucide-react";
+import { FileText, Sparkles, Search } from "lucide-react";
 import { MobileNav } from "./MobileNav";
 
 export function SiteHeader() {
@@ -45,7 +45,22 @@ export function SiteHeader() {
         </nav>
 
         {/* Right Action */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
+          {/* Command Menu Trigger Button */}
+          <button
+            type="button"
+            onClick={() => window.dispatchEvent(new CustomEvent("open-command-menu"))}
+            className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-2.5 sm:px-3 py-1.5 text-xs text-slate-300 hover:border-purple-400/50 hover:bg-white/10 hover:text-white transition-all shadow-[0_0_10px_rgba(0,0,0,0.3)]"
+            title="Buka Command Menu (⌘K atau Ctrl+K)"
+            aria-label="Buka Command Menu"
+          >
+            <Search className="size-3.5 text-cyan-400" />
+            <span className="hidden lg:inline text-[11px] text-slate-400">Cari</span>
+            <kbd className="hidden sm:inline-flex items-center rounded border border-white/20 bg-white/10 px-1.5 py-0.5 font-mono text-[9px] text-slate-300">
+              ⌘K
+            </kbd>
+          </button>
+
           <Link
             href="/resume"
             className="hidden sm:inline-flex items-center gap-2 rounded-full border border-purple-500/30 bg-purple-950/30 px-4 py-1.5 text-xs font-medium text-purple-200 shadow-[0_0_15px_rgba(168,85,247,0.2)] hover:border-purple-400 hover:bg-purple-900/40 hover:text-white transition-all"

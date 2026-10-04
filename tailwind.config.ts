@@ -68,11 +68,20 @@ const config = {
         "float-slow": "float 7s ease-in-out infinite",
         "spin-very-slow": "spin 25s linear infinite",
         "pulse-subtle": "pulse 3.5s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "shimmer-slide": "shimmer-slide 3s ease-in-out infinite",
+        "border-beam": "border-beam 6s linear infinite",
       },
       keyframes: {
         float: {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-10px)" },
+        },
+        "shimmer-slide": {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(200%)" },
+        },
+        "border-beam": {
+          "100%": { "offset-distance": "100%" },
         },
       },
     },

@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import { profile } from "@/content/profile";
 import { BrandIcon, type BrandKey } from "@/components/icons/BrandIcon";
+import { DevOpsTerminal } from "./DevOpsTerminal";
 
 export function HeroSection() {
   const reduceMotion = useReducedMotion();
@@ -92,94 +93,22 @@ export function HeroSection() {
           </div>
         </div>
 
-        {/* Right Column: High-Tech Floating Telemetry Card */}
+        {/* Right Column: High-Tech Interactive DevOps Terminal */}
         <div className="lg:col-span-5 relative">
-          <div className="relative mx-auto max-w-md lg:max-w-none">
-            {/* Ambient backlight */}
-            <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-purple-600/30 to-cyan-500/30 opacity-70 blur-xl transition-all" />
+          <DevOpsTerminal />
 
-            {/* Main Glass Telemetry Card */}
-            <div className="relative rounded-2xl border border-white/15 bg-[#090c24]/85 p-6 sm:p-7 shadow-[0_20px_50px_rgba(0,0,0,0.6)] backdrop-blur-2xl">
-              {/* Card Header */}
-              <div className="flex items-center justify-between border-b border-white/10 pb-4">
-                <div className="flex items-center gap-2">
-                  <span className="size-3 rounded-full bg-rose-500/80" />
-                  <span className="size-3 rounded-full bg-amber-500/80" />
-                  <span className="size-3 rounded-full bg-emerald-500/80" />
-                  <span className="ml-2 font-mono text-xs text-slate-400">telemetry.live</span>
-                </div>
-                <span className="inline-flex items-center gap-1.5 rounded-md border border-cyan-500/30 bg-cyan-950/40 px-2 py-0.5 font-mono text-[10px] text-cyan-300">
-                  <Sparkles className="size-2.5" /> HA ACTIVE
-                </span>
-              </div>
-
-              {/* Cluster Specs Grid */}
-              <div className="mt-5 space-y-4 font-mono text-xs">
-                {/* Enterprise Pod */}
-                <div className="rounded-xl border border-white/10 bg-[#101438]/60 p-3.5 transition-colors hover:border-purple-500/40">
-                  <div className="flex items-center justify-between">
-                    <span className="flex items-center gap-2 text-purple-300 font-semibold">
-                      <BrandIcon brand="bamboo" className="size-4" /> BRI Enterprise CI/CD
-                    </span>
-                    <span className="text-[10px] text-emerald-400 bg-emerald-950/60 px-1.5 py-0.5 rounded border border-emerald-500/30">200+ SVC</span>
-                  </div>
-                  <p className="mt-2 text-[11px] text-slate-300 font-sans leading-relaxed">
-                    Bamboo Hardgate (feature) · Softgate (dev) · Pure Build/Push Nexus (prod) · 6 Envs (Dev → QA → Pentest → UAT → Preprod → Prod DC/DRC/GCP).
-                  </p>
-                </div>
-
-                {/* Homelab Pod */}
-                <div className="rounded-xl border border-white/10 bg-[#101438]/60 p-3.5 transition-colors hover:border-cyan-500/40">
-                  <div className="flex items-center justify-between">
-                    <span className="flex items-center gap-2 text-cyan-300 font-semibold">
-                      <BrandIcon brand="kubernetes" className="size-4" /> Homelab Bare-Metal K8s
-                    </span>
-                    <span className="text-[10px] text-cyan-400 bg-cyan-950/60 px-1.5 py-0.5 rounded border border-cyan-500/30">VIP .60</span>
-                  </div>
-                  <p className="mt-2 text-[11px] text-slate-300 font-sans leading-relaxed">
-                    Dual HAProxy + Keepalived VRRP · 3 Masters + 3 Workers · Longhorn Replicated Storage · HashiCorp Vault HA Sidecars.
-                  </p>
-                </div>
-
-                {/* Real Live Metrics Pills */}
-                <div className="grid grid-cols-2 gap-2 pt-1">
-                  <div className="rounded-lg border border-white/10 bg-[#101438]/40 p-2.5">
-                    <span className="text-[10px] text-slate-400 block">K8s Nodes</span>
-                    <span className="text-base font-bold text-white">6 / 6 Ready</span>
-                    <span className="text-[9px] text-emerald-400 block mt-0.5">● Uptime 70d+</span>
-                  </div>
-                  <div className="rounded-lg border border-white/10 bg-[#101438]/40 p-2.5">
-                    <span className="text-[10px] text-slate-400 block">Workload</span>
-                    <span className="text-base font-bold text-white">Zabisa HA</span>
-                    <span className="text-[9px] text-purple-400 block mt-0.5">● 10 Svcs / 20 Pods</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Card Footer / Quick Status */}
-              <div className="mt-5 flex items-center justify-between border-t border-white/10 pt-4 text-[11px] text-slate-400">
-                <span className="flex items-center gap-1.5">
-                  <BrandIcon brand="sonarqube" className="size-3.5" /><BrandIcon brand="trivy" className="size-3.5" /> DevSecOps & SCA Covered
-                </span>
-                <Link href="#about" className="text-cyan-400 hover:text-white font-medium transition-colors">
-                  Tentang Dita →
-                </Link>
-              </div>
+          {/* Floating Achievement Badge */}
+          <motion.div
+            animate={{ y: [-4, 6, -4] }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -bottom-6 -left-4 rounded-xl border border-purple-500/40 bg-[#0d102e]/95 px-3.5 py-2 shadow-[0_10px_25px_rgba(0,0,0,0.5)] backdrop-blur-xl hidden sm:flex items-center gap-2.5 z-20"
+          >
+            <BrandIcon brand="kvm" className="size-5 text-cyan-400" />
+            <div className="text-[11px]">
+              <span className="font-semibold text-white block">Bare-Metal K8s Cluster</span>
+              <span className="text-slate-400">100% Dari Nol (KVM/libvirt)</span>
             </div>
-
-            {/* Floating Achievement Badges */}
-            <motion.div
-              animate={{ y: [-4, 6, -4] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -bottom-5 -left-4 rounded-xl border border-purple-500/40 bg-[#0d102e]/95 px-3.5 py-2 shadow-[0_10px_25px_rgba(0,0,0,0.5)] backdrop-blur-xl hidden sm:flex items-center gap-2"
-            >
-              <BrandIcon brand="kvm" className="size-5" />
-              <div className="text-[11px]">
-                <span className="font-semibold text-white block">Multi-VM Cluster</span>
-                <span className="text-slate-400">100% Dari 0</span>
-              </div>
-            </motion.div>
-          </div>
+          </motion.div>
         </div>
 
       </div>

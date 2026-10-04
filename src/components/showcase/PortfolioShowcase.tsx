@@ -9,6 +9,7 @@ import { cases } from "@/content/cases";
 import { CaseCard } from "@/components/work/CaseCard";
 import { TechStackGrid } from "./TechStackGrid";
 import { CaseArchitectureDiagram } from "@/components/work/CaseArchitectureDiagram";
+import { SpotlightCard } from "@/components/ui/SpotlightCard";
 
 type TabKey = "projects" | "homelab" | "techstack";
 
@@ -128,35 +129,50 @@ export function PortfolioShowcase() {
 
                 {/* Specs Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="glass-card rounded-2xl p-6">
-                    <div className="flex items-center gap-3 text-cyan-400 font-semibold mb-3">
-                      <BrandIcon brand="haproxy" className="size-5" />
-                      <h4>HA Load Balancer & VIP</h4>
+                  <SpotlightCard
+                    spotlightColor="rgba(6, 182, 212, 0.3)"
+                    className="hover:-translate-y-1 transition-all duration-300"
+                  >
+                    <div className="p-6">
+                      <div className="flex items-center gap-3 text-cyan-400 font-semibold mb-3">
+                        <BrandIcon brand="haproxy" className="size-5" />
+                        <h4>HA Load Balancer & VIP</h4>
+                      </div>
+                      <p className="text-xs text-slate-300 leading-relaxed">
+                        Dual VM HAProxy (lb-dt-1 .61 & lb-dt-2 .62) dengan Keepalived VRRP. Mengapungkan floating VIP <strong>192.168.100.60:6443</strong> sebagai single entry point API server.
+                      </p>
                     </div>
-                    <p className="text-xs text-slate-300 leading-relaxed">
-                      Dual VM HAProxy (lb-dt-1 .61 & lb-dt-2 .62) dengan Keepalived VRRP. Mengapungkan floating VIP <strong>192.168.100.60:6443</strong> sebagai single entry point API server.
-                    </p>
-                  </div>
+                  </SpotlightCard>
 
-                  <div className="glass-card rounded-2xl p-6">
-                    <div className="flex items-center gap-3 text-purple-400 font-semibold mb-3">
-                      <BrandIcon brand="kubernetes" className="size-5" />
-                      <h4>6-Node Compute Quorum</h4>
+                  <SpotlightCard
+                    spotlightColor="rgba(168, 85, 247, 0.3)"
+                    className="hover:-translate-y-1 transition-all duration-300"
+                  >
+                    <div className="p-6">
+                      <div className="flex items-center gap-3 text-purple-400 font-semibold mb-3">
+                        <BrandIcon brand="kubernetes" className="size-5" />
+                        <h4>6-Node Compute Quorum</h4>
+                      </div>
+                      <p className="text-xs text-slate-300 leading-relaxed">
+                        3 Control-Plane (master-dt-1..3) dengan etcd quorum aman + 3 Worker (worker-dt-1..3) berbasis Ubuntu 22.04 LTS & containerd 2.2. Uptime 70 hari+.
+                      </p>
                     </div>
-                    <p className="text-xs text-slate-300 leading-relaxed">
-                      3 Control-Plane (master-dt-1..3) dengan etcd quorum aman + 3 Worker (worker-dt-1..3) berbasis Ubuntu 22.04 LTS & containerd 2.2. Uptime 70 hari+.
-                    </p>
-                  </div>
+                  </SpotlightCard>
 
-                  <div className="glass-card rounded-2xl p-6">
-                    <div className="flex items-center gap-3 text-emerald-400 font-semibold mb-3">
-                      <BrandIcon brand="vault" className="size-5" />
-                      <h4>Storage, Vault & Zabisa</h4>
+                  <SpotlightCard
+                    spotlightColor="rgba(16, 185, 129, 0.3)"
+                    className="hover:-translate-y-1 transition-all duration-300"
+                  >
+                    <div className="p-6">
+                      <div className="flex items-center gap-3 text-emerald-400 font-semibold mb-3">
+                        <BrandIcon brand="vault" className="size-5" />
+                        <h4>Storage, Vault & Zabisa</h4>
+                      </div>
+                      <p className="text-xs text-slate-300 leading-relaxed">
+                        Longhorn Replicated Storage, HashiCorp Vault HA 3 replicas dengan auto-sidecar injector, serta Zabisa Super App (10 microservices / 20 pods aktif).
+                      </p>
                     </div>
-                    <p className="text-xs text-slate-300 leading-relaxed">
-                      Longhorn Replicated Storage, HashiCorp Vault HA 3 replicas dengan auto-sidecar injector, serta Zabisa Super App (10 microservices / 20 pods aktif).
-                    </p>
-                  </div>
+                  </SpotlightCard>
                 </div>
               </motion.div>
             )}

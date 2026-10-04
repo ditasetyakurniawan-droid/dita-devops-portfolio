@@ -5,6 +5,8 @@ import { Download, ArrowUpRight, Sparkles } from "lucide-react";
 import { profile } from "@/content/profile";
 import { InteractiveIdCard } from "@/components/badge/InteractiveIdCard";
 import { BrandIcon, brands, type BrandKey } from "@/components/icons/BrandIcon";
+import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
+import { SpotlightCard } from "@/components/ui/SpotlightCard";
 
 const metrics: readonly Readonly<{ number: string; label: string; detail: string; brand: BrandKey }>[] = [
   { number: "200+", label: "Microservices Dikelola", detail: "Ekosistem Mobile Banking BRI · OpenShift", brand: "openshift" },
@@ -85,25 +87,28 @@ export function AboutMeSection() {
           </div>
         </div>
 
-        {/* Bottom Metrics Grid (Matches 00:14 - 00:18 in reference video) */}
+        {/* Bottom Metrics Grid with Spotlight & Animated Counter */}
         <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {metrics.map(({ number, label, detail, brand }) => (
-            <div
+            <SpotlightCard
               key={label}
-              className="glass-card relative overflow-hidden rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]"
-              style={{ boxShadow: `0 8px 30px -14px ${brands[brand].color}88` }}
+              spotlightColor={`${brands[brand].color}44`}
+              className="transition-all duration-300 hover:scale-[1.02]"
             >
-              <div className="flex items-center justify-between">
-                <span className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
-                  {number}
-                </span>
-                <span title={brands[brand].label} className="grid size-11 place-items-center rounded-xl border border-white/10 bg-[#07091e]/80 shadow-md">
-                  <BrandIcon brand={brand} className="size-6" />
-                </span>
+              <div className="p-6">
+                <div className="flex items-center justify-between">
+                  <AnimatedCounter
+                    value={number}
+                    className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white"
+                  />
+                  <span title={brands[brand].label} className="grid size-11 place-items-center rounded-xl border border-white/10 bg-[#07091e]/80 shadow-md">
+                    <BrandIcon brand={brand} className="size-6" />
+                  </span>
+                </div>
+                <h4 className="mt-4 text-sm font-semibold text-slate-100">{label}</h4>
+                <p className="mt-1 text-xs text-slate-300">{detail}</p>
               </div>
-              <h4 className="mt-4 text-sm font-semibold text-slate-100">{label}</h4>
-              <p className="mt-1 text-xs text-slate-300">{detail}</p>
-            </div>
+            </SpotlightCard>
           ))}
         </div>
 
