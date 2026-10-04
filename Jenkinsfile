@@ -10,7 +10,7 @@ pipeline {
     booleanParam(name: 'BUILD_IMAGE', defaultValue: true, description: 'Build Docker Image')
     booleanParam(name: 'SCAN_IMAGE', defaultValue: true, description: 'Scan image dengan Trivy')
     booleanParam(name: 'PUSH_IMAGE', defaultValue: true, description: 'Push image ke Harbor')
-    booleanParam(name: 'DEPLOY_K8S', defaultValue: true, description: 'Auto-rollout deployment di Kubernetes')
+    booleanParam(name: 'DEPLOY_K8S', defaultValue: false, description: 'Auto-rollout deployment di Kubernetes')
   }
   environment {
     HARBOR = 'harbor-dt.co.id'
@@ -46,6 +46,23 @@ pipeline {
             npm run build
           '
         '''
+      }
+    }
+
+    stage('SonarQube SAST Analysis') {
+      steps {
+        withSonarQubeEnv('SonarQube') {
+          sh '''
+            docker run --rm \
+              --add-host sonar-dt:192.168.100.59 \
+              --volumes-from "$HOSTNAME" \
+              -w "$PWD" \
+              -e SONAR_TOKEN="$SONAR_AUTH_TOKEN" \
+              sonarsource/sonar-scanner-cli:latest \
+              -Dsonar.host.url="$SONAR_HOST_URL" \
+              -Dsonar.qualitygate.wait=true
+          '''
+        }
       }
     }
 
