@@ -43,6 +43,8 @@ pipeline {
             set -eu
             npm ci --no-audit --no-fund
             npm run typecheck
+            mkdir -p coverage
+            npm run test:coverage
             npm run build
           '
         '''
@@ -111,15 +113,36 @@ pipeline {
       }
     }
 
-    stage('Deploy to Kubernetes') {
+    stage('Update GitOps Repository') {
       when {
-        expression { return params.DEPLOY_K8S }
+        expression { return params.PUSH_IMAGE }
       }
       steps {
-        sh """
-          kubectl rollout restart deployment ${DEPLOYMENT_NAME} -n ${NAMESPACE}
-          kubectl rollout status deployment ${DEPLOYMENT_NAME} -n ${NAMESPACE} --timeout=120s
-        """
+        withCredentials([usernamePassword(credentialsId: 'github-credentials-id', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
+          sh """
+            set -eu
+            rm -rf gitops-repo
+            git clone https://${GIT_USER}:${GIT_PASS}@github.com/ditasetyakurniawan-droid/dita-devops-portfolio-gitops.git gitops-repo
+            cd gitops-repo
+            
+            # Update tag image di manifest GitOps ke commit hash saat ini
+            sed -i "s|image: ${HARBOR}/${PROJECT}:.*|image: ${HARBOR}/${PROJECT}:${SHORT_SHA}|g" manifests/manifest.yaml
+            
+            if git diff --quiet manifests/manifest.yaml; then
+              echo "No image change detected in GitOps."
+            else
+              git config user.name "Jenkins CI/CD"
+              git config user.email "jenkins@zabisa.local"
+              git add manifests/manifest.yaml
+              git commit -m "chore(gitops): promote image ${SHORT_SHA} [skip ci]"
+              git push origin main
+              echo "GitOps repository successfully updated with image ${SHORT_SHA}!"
+            fi
+            
+            cd ..
+            rm -rf gitops-repo
+          """
+        }
       }
     }
   }
