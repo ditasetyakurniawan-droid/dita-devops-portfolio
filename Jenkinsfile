@@ -144,7 +144,7 @@ pipeline {
               curl -k -s -X POST \
                 -H "Content-Type: application/json" \
                 -H "X-GitHub-Event: push" \
-                -d '{"repository":{"html_url":"https://github.com/ditasetyakurniawan-droid/dita-devops-portfolio-gitops"}}' \
+                -d '{"repository":{"html_url":"https://github.com/ditasetyakurniawan-droid/dita-devops-portfolio-gitops","clone_url":"https://github.com/ditasetyakurniawan-droid/dita-devops-portfolio-gitops.git"}}' \
                 http://192.168.100.64/api/webhook || true
             fi
             
