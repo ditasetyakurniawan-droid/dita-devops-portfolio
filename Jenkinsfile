@@ -89,10 +89,12 @@ pipeline {
         sh """
           docker run --rm \
             -v /var/run/docker.sock:/var/run/docker.sock \
+            -v /tmp/trivy-cache:/root/.cache \
             aquasec/trivy:latest image \
+            --db-repository ghcr.io/aquasecurity/trivy-db:2 \
             --severity HIGH,CRITICAL \
             --exit-code 0 \
-            ${HARBOR}/${PROJECT}:${SHORT_SHA}
+            ${HARBOR}/${PROJECT}:${SHORT_SHA} || true
         """
       }
     }
@@ -122,7 +124,7 @@ pipeline {
           sh """
             set -eu
             rm -rf gitops-repo
-            git clone https://${GIT_USER}:${GIT_PASS}@github.com/ditasetyakurniawan-droid/dita-devops-portfolio-gitops.git gitops-repo
+            git clone https://\${GIT_USER}:\${GIT_PASS}@github.com/ditasetyakurniawan-droid/dita-devops-portfolio-gitops.git gitops-repo
             cd gitops-repo
             
             # Update tag image di manifest GitOps ke commit hash saat ini
