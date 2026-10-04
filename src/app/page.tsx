@@ -35,25 +35,25 @@ export default function Home() {
 
               <SectionDivider label="✦ 01 / ARSITEKTUR & PROFIL" accentColor="purple" />
 
-              <SectionSlide>
+              <SectionSlide targetId="about" intensity="prominent">
                 <AboutMeSection />
               </SectionSlide>
 
               <SectionDivider label="✦ 02 / REKAYASA & KARYA TERUJI" accentColor="cyan" />
 
-              <SectionSlide>
+              <SectionSlide targetId="showcase" intensity="prominent">
                 <PortfolioShowcase />
               </SectionSlide>
 
               <SectionDivider label="✦ 03 / REKAM JEJAK ENTERPRISE" accentColor="purple" />
 
-              <SectionSlide>
+              <SectionSlide targetId="experience" intensity="prominent">
                 <ExperienceSection />
               </SectionSlide>
 
               <SectionDivider label="✦ 04 / HUBUNGI & KONSULTASI" accentColor="emerald" />
 
-              <SectionSlide>
+              <SectionSlide targetId="contact" intensity="prominent">
                 <ContactSection />
               </SectionSlide>
             </div>

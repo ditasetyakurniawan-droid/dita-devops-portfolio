@@ -39,11 +39,38 @@ export function SiteHeader() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, item: { href: string; id: string }) => {
+    // If not on homepage, let default Link navigate
+    if (window.location.pathname !== "/") {
+      return;
+    }
+
+    e.preventDefault();
+    const el = document.getElementById(item.id);
+    if (el) {
+      const yOffset = item.id === "top" ? 0 : -85;
+      const targetY = item.id === "top" ? 0 : el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({
+        top: targetY,
+        behavior: "smooth",
+      });
+      setActiveSection(item.id);
+      window.history.pushState(null, "", item.href);
+
+      // Fire arrival animation event for destination section
+      window.dispatchEvent(new CustomEvent("section-arrival", { detail: { id: item.id } }));
+    }
+  };
+
   return (
     <header className="fixed top-3 sm:top-5 inset-x-0 z-40 px-3 sm:px-6 pointer-events-none transition-all duration-300">
       <div className="pointer-events-auto mx-auto flex max-w-5xl items-center justify-between gap-4 rounded-full border border-white/10 bg-[#07091e]/85 px-4 sm:px-6 py-2.5 shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] backdrop-blur-2xl">
         {/* Brand */}
-        <Link href="/#top" className="flex items-center gap-2.5 group">
+        <Link
+          href="/#top"
+          onClick={(e) => handleNavClick(e, { href: "/#top", id: "top" })}
+          className="flex items-center gap-2.5 group"
+        >
           <span className="relative flex size-8 items-center justify-center rounded-full bg-gradient-to-tr from-purple-600 to-cyan-500 font-mono text-xs font-bold text-white shadow-[0_0_15px_rgba(168,85,247,0.4)]">
             DK
             <span className="absolute -top-0.5 -right-0.5 size-2.5 rounded-full bg-cyan-400 ring-2 ring-[#07091e] animate-pulse" />
@@ -64,6 +91,7 @@ export function SiteHeader() {
               <Link
                 key={item.id}
                 href={item.href}
+                onClick={(e) => handleNavClick(e, item)}
                 className={`relative px-3.5 py-1.5 rounded-full transition-colors ${
                   isActive ? "text-white font-semibold" : "hover:text-white hover:bg-white/5"
                 }`}
